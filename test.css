@@ -1,0 +1,77 @@
+/* section calendar */
+
+.mybody {
+    width: 1280px;
+    margin: 0 auto;
+    font-family: "NotoSansR";
+    font-size: 28px
+}
+.mybody.result {
+    background-color: lightgrey;
+}
+
+.sec_cal {
+    width: 1280px;
+    margin: 0 auto;
+    font-family: "NotoSansR";
+}
+
+.sec_cal .cal_wrap {
+    padding-top: 40px;
+    position: relative;
+    margin: 0 auto;
+    column-count: 2;
+}
+
+.sec_cal .cal_wrap .day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 9);
+    text-align: left;
+    color: #000;
+    font-size: 20px;
+    text-align: center;
+    outline: 0.5px solid;
+    border-radius: 5px 5px;
+}
+
+.current.today {background: rgb(242 242 242);}
+
+
+.sec_cal .cal_wrap .dates {
+    display: flex;
+    flex-flow: wrap;
+    height: 2900px;
+}
+
+/* nth-child
+ * 9개 항목 당 1 week을 구성
+ * 첫 두개는 월 선택 버튼, 주 선택 버튼이고
+ * 다음 7개는 일요일부터 토요일
+ */
+
+.sec_cal .cal_wrap .day:nth-child(9n) {
+    color: #3c6ffa;
+}
+
+.sec_cal .cal_wrap .day:nth-child(9n-6) {
+    color: #ed2a61;
+}
+
+.sec_cal .cal_wrap .day.holiday {
+    color: red;
+}
+
+.sec_cal .cal_wrap .day.disable {
+    color: white;
+}
+
+.sec_cal .cal_wrap .day.button {
+    background: lightblue;
+}
+
+
+.sec_cal .cal_wrap .day.notwork {
+    background: grey;
+}

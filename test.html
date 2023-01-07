@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="test.css">
+  </head>
+  <title>공무원 실제 근무한 기간 계산기</title>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+  <script src="jquery.min.js"></script>
+  <script src="test.js"></script>
+
+  <body>
+
+    <div style="border: 1px solid; margin: 0 auto; width: 1280px;">
+      <h1 class="mybody">공무원 실제 근무한 기간 계산기(성과계약등평가, 근무성적평가, 성과급평가)</h1>
+      <br>
+      <p class="mybody">평가 및 지급대상자 기준이 되는 <b>실제 근무한 기간</b>을 계산해주는 기능</p>
+      <p></p><br>
+      <p class="mybody">사용법:</p>
+      <ol class="mybody" type="A">
+        <li>연가 일수를 입력 (30일 미만)</li>
+        <ul>
+          <li>30일 이상의 연가의 경우 B.의 달력에 근무에 종사하지 않는 기간으로 표기</li>
+          <li>연가는 8시간 당 1일로 계산해서 입력하며, 8시간 미만은 버림</li>
+          <li>단, 시간선택제공무원의 경우 근무시간 기준으로 연가 1일 계산</li>
+        </ul>
+        <li>아래 달력에서 근무에 종사하지 않는 기간을 표기(휴직, 교육훈련파견, 직위해제 등)</li>
+        <ul>
+          <li>연가의 경우 30일 이상의 경우만 표기하고 그 외는 A.에 입력</li>
+          <li>공무상 질병휴직도 근무에 종사하지 않는 기간으로 표기</li>
+          <li>복직하였지만 본부발령대기인 경우에도 근무에 종사하지 않는 기간으로 표기</li>
+        </ul>
+        <li>결과확인 (아래로 스크롤다운)</li>
+      </ol>
+      <p></p><br>
+      <p class="mybody">설명:</p>
+      <ul class="mybody">
+        <li>근거: 공무원보수등의 업무지침 -> 제8장 성과상여금업무처리기준 -> 2. 대상 -> 다. 지급제외</li>
+        <li>계산: 민법 제160조의 역에 의한 방법으로 계산 (2개월 예시: 1.1. ~ 2.28.)</li>
+      </ul>
+      <p></p><br>
+      <p class="mybody">주의사항:</p>
+      <ul class="mybody">
+        <li>신규채용자 중 평가대상기간 공무원 경력이 있는 경우 실제근무한기간 합산</li>
+      </ul>
+    </div>
+
+    <p></p><br>
+    <br>
+    <p></p>
+    <div class="mybody">A. 연가 일수 : <input type="number" id="points" name="points" step="1" style="height: 50px;font-size: 30px" onchange="vacation_change(this.value)"></div>
+    <br>
+    <div class="mybody">B. 근무에 종사하지 않는 기간 표기
+      <button class="mybody" onclick="all_work()">초기화(전부출근)</button>
+      <button class="mybody" onclick="all_rest()">초기화(전부휴직)</button>
+    </div>
+
+    <div class="sec_cal">
+      <div class="cal_wrap">
+        <div class="dates" id="service_cal" ></div>
+      </div>
+    </div>
+    <br>
+    <div class="mybody result">C. 결과: </div>
+    <div class="mybody result" id="result_div"></div>
+
+
+  </body>
+
+</html>
+
+

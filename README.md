@@ -20,6 +20,8 @@
   - 평가기준일이 12월 31일, 즉 평가대상기간이 2022-01-01 ~ 2022-12-31
   - 토요일, 일요일, 공휴일은 근무일이 아님
   - 실제 근무한 기간 2개월 충족 여부를 확인
+- HTML, CSS는 인터페이스만 담당하고 계산 기능은 전부 Javascript 구현
+  - 클라이언트에서만 코드가 돌기 때문에 예외처리를 강하게 하지 않음
 
 # Reference
 - [공무원성과평가등에관한규정](https://law.go.kr/lsInfoP.do?lsiSeq=246967&lsId=009712&chrClsCd=010202&urlMode=lsInfoP&viewCls=lsInfoP&efYd=20221227&vSct=%EA%B3%B5%EB%AC%B4%EC%9B%90%EC%84%B1%EA%B3%BC%ED%8F%89%EA%B0%80&ancYnChk=0#0000)
