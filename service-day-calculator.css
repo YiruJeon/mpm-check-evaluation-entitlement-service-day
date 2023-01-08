@@ -36,8 +36,6 @@
     border-radius: 5px 5px;
 }
 
-.current.today {background: rgb(242 242 242);}
-
 
 .sec_cal .cal_wrap .dates {
     display: flex;
@@ -69,9 +67,4 @@
 
 .sec_cal .cal_wrap .day.button {
     background: lightblue;
-}
-
-
-.sec_cal .cal_wrap .day.notwork {
-    background: grey;
 }
