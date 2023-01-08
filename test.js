@@ -200,31 +200,19 @@ function update_result(){
     while(cur_s_ind <= last_work_date_ind){
 
       // 현재 근무일 그룹 확인
+      service_day_interval_has_workingday = false
       for(ind = cur_s_ind; ind <= last_work_date_ind && service_day_array[ind] == 1; ++ind){
-        ++service_count;
+        cur_date = index_to_date(ind)
+        if(!(cur_date.getDay() == 0 || cur_date.getDay() == 6 || is_holiday(cur_date)))
+          service_day_interval_has_workingday = true
       }
       cur_e_ind = ind - 1;
 
-      // 현재 근무일 직전 휴일확인
-      for(i = cur_s_ind-1; i >= first_work_date_ind && service_day_array[i] == 0; --i){
-        cur_date = index_to_date(i)
-        if(cur_date.getDay() == 0 || cur_date.getDay() == 6 || is_holiday(cur_date)){
-          document.getElementById(`day-${i}`).style.color = 'lightgreen'
-          ++service_count; // 휴일 산입
-        }
-        else
-          break
-      }
-
-      // 마지막 그룹 근무일 직후 휴일 확인
-      for(i = cur_e_ind+1; i <= last_work_date_ind && service_day_array[i] == 0; ++i){
-        cur_date = index_to_date(i)
-        if(cur_date.getDay() == 0 || cur_date.getDay() == 6 || is_holiday(cur_date)){
-          document.getElementById(`day-${i}`).style.color = 'lightgreen'
-          ++service_count; // 휴일 산입
-        }
-        else
-          break
+      if(service_day_interval_has_workingday == true)
+        service_count += cur_e_ind - cur_s_ind + 1;
+      else{
+        for(ind = cur_s_ind; ind <= cur_e_ind; ++ind)
+          document.getElementById(`day-${ind}`).style.background = 'orange'
       }
 
       for(ind = cur_e_ind+1; ind <= last_work_date_ind && service_day_array[ind] == 0; ++ind) ;
