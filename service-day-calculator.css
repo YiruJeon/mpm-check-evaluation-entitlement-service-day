@@ -36,6 +36,11 @@
     border-radius: 5px 5px;
 }
 
+.sec_cal .cal_wrap .dates_legend {
+    display: flex;
+    flex-flow: wrap;
+    height: 50px;
+}
 
 .sec_cal .cal_wrap .dates {
     display: flex;
