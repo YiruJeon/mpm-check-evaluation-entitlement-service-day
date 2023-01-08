@@ -5,6 +5,7 @@
 $(document).ready(function () {
   prepareMap();
   calendarInit();
+  update_result();
 });
 
 
@@ -27,7 +28,6 @@ function calendarInit() {
 
   // 캘린더 렌더링
   render_calender();
-  update_result();
 }
 
 
@@ -188,9 +188,7 @@ function update_result(){
     result.innerHTML += '<b style="color: red">실근무2개월미만</b>, 11월 2일 이후 근무시작한 직원은 2개월 이상 불가능'
     return
   }
-
-
-  // 11월 1일 이전 출근자
+  // 이후는 11월 1일 이전 출근자만 실행되는 코드
 
   // 근무기간 분리자
   if(is_service_date_separated()){
@@ -229,13 +227,14 @@ function update_result(){
           break
       }
 
-      for(cur_s_ind = cur_e_ind+1; cur_s_ind <= last_work_date_ind && service_day_array[cur_s_ind] == 0; ++cur_s_ind) ;
+      for(ind = cur_e_ind+1; ind <= last_work_date_ind && service_day_array[ind] == 0; ++ind) ;
+      cur_s_ind = ind
     }
 
     if(service_count < 60 + vacation_count)
       result.innerHTML += `<b style="color: red">실근무2개월 미만, 근무일(${service_count}) - 연가일(${vacation_count}) = ${service_count - vacation_count}</b>`
     else
-      result.innerHTML += `<b style="color: blue">실근무2개월 이상</b>`
+      result.innerHTML += `<b style="color: blue">실근무2개월 이상, 근무일(${service_count}) - 연가일(${vacation_count}) = ${service_count - vacation_count}</b>`
   }
 
 
