@@ -1,5 +1,9 @@
 /* section calendar */
 
+.mytext {
+    font-family: "NotoSansR";
+    font-size: 28px
+}
 .mybody {
     width: 1280px;
     margin: 0 auto;

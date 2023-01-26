@@ -23,7 +23,7 @@ function calendarInit() {
   for(i = 0; i < 365; ++i)
     service_day_array[i] = 1;
 
-  // 연가 사용 개수
+  // 휴가 사용 개수
   vacation_count = 0
 
   // 캘린더 렌더링
@@ -46,7 +46,7 @@ function render_calender() {
   calendar.innerHTML = '';
 
   // 지난해 및 1월 버튼
-  calendar.innerHTML += '<div class="day button" onclick=click_month(1)>1월</div>'
+  calendar.innerHTML += '<div class="day" >1월</div>'
   calendar.innerHTML += '<div class="day disable"></div>'  // 0주차 PlaceHolder
 
   // 지난해 마지막 주 날짜 표기
@@ -70,22 +70,22 @@ function render_calender() {
         // 6일 후가 다음달이거나 아니면 오늘이 1일이면 월 선택 버튼 생성
         if(six_days_later.getMonth() != cur_day.getMonth() || cur_day.getDate() == 1){
           month = six_days_later.getMonth() + 1
-          calendar.innerHTML += `<div class="day button" onclick=click_month(${month})>${month}월</div>`
+          calendar.innerHTML += `<div class="day" >${month}월</div>`
         }
         else
           calendar.innerHTML += '<div class="day"></div>'
       }
       // 주 버튼 처리
-      calendar.innerHTML += `<div class="day button" onclick=click_week(${week_count})>${week_count}주차</div>`
+      calendar.innerHTML += `<div class="day" >${week_count}주차</div>`
     }
 
     // 일 버튼 처리
     month = cur_day.getMonth() + 1
     date = cur_day.getDate()
     if(is_holiday(cur_day))
-      calendar.innerHTML += `<div id="day-${ind}" class="day holiday" onclick="click_day(${ind})">${month}. ${date}.</div>`
+      calendar.innerHTML += `<div id="day-${ind}" class="day holiday" >${month}. ${date}.</div>`
     else
-      calendar.innerHTML += `<div id="day-${ind}" class="day" onclick="click_day(${ind})">${month}. ${date}.</div>`
+      calendar.innerHTML += `<div id="day-${ind}" class="day" >${month}. ${date}.</div>`
     cur_day.setDate(cur_day.getDate() + 1);
   }
 
@@ -176,7 +176,7 @@ function update_calendar(){
 
 function update_result(){
   result = document.getElementById("result_div")
-  result.innerHTML = `연가 ${vacation_count} 사용, `
+  result.innerHTML = `휴가 ${vacation_count} 사용, `
 
 
   first_work_date_ind = find_first_service_date_index();
@@ -220,9 +220,9 @@ function update_result(){
     }
 
     if(service_count < 60 + vacation_count)
-      result.innerHTML += `<b style="color: red">실근무2개월 미만, 근무일(${service_count}) - 연가일(${vacation_count}) = ${service_count - vacation_count}</b>`
+      result.innerHTML += `<b style="color: red">실근무2개월 미만, 근무일(${service_count}) - 휴가일(${vacation_count}) = ${service_count - vacation_count}</b>`
     else
-      result.innerHTML += `<b style="color: blue">실근무2개월 이상, 근무일(${service_count}) - 연가일(${vacation_count}) = ${service_count - vacation_count}</b>`
+      result.innerHTML += `<b style="color: blue">실근무2개월 이상, 근무일(${service_count}) - 휴가일(${vacation_count}) = ${service_count - vacation_count}</b>`
   }
 
 
@@ -230,12 +230,17 @@ function update_result(){
   else{
     result.innerHTML += '근무기간 분리안됨, 역에의한 계산 사용<br>'
     two_month_later_day = index_to_date(first_work_date_ind)
+    /*
+      아래 코드 원래는 이렇게 짜면 안됨
+      2월이 섞일 경우 절묘하게 꼬일 수 있음
+      그런데 일단 평가기준일 12.31. 고정이라 아래코드로도 정상 동작
+    */
     two_month_later_day.setMonth(two_month_later_day.getMonth() + 2)
     two_month_later_day.setDate(two_month_later_day.getDate() - 1)
     two_month_later_ind = date_to_index(two_month_later_day)
 
     if(two_month_later_ind > last_work_date_ind){
-      result.innerHTML += '연가 고려 전 이미 <b style="color: red">실근무2개월미만</b>'
+      result.innerHTML += '휴가 고려 전 이미 <b style="color: red">실근무2개월미만</b>'
       return;
     }
 
@@ -243,11 +248,11 @@ function update_result(){
     str_twomonth_later = two_month_later_day.toLocaleDateString()
 
     result.innerHTML += `2개월(${str_first_service_date} ~ ${str_twomonth_later}) 근무 기준, <br>`
-    result.innerHTML += `연가일수(${vacation_count}일) 만큼 추가 출근했는지 확인 <br>`
+    result.innerHTML += `휴가일수(${vacation_count}일) 만큼 추가 출근했는지 확인 <br>`
     remaining_count = vacation_count
     for(i = two_month_later_ind + 1; remaining_count > 0 && i <= last_work_date_ind; ++i){
       // 일요일, 토요일, 공휴일 제외
-      // 근무일수 세서 연가 채우는지 본다
+      // 근무일수 세서 휴가 채우는지 본다
       cur_date = index_to_date(i)
       if(cur_date.getDay() == 0 || cur_date.getDay() == 6 || is_holiday(cur_date))
         continue;
@@ -257,7 +262,7 @@ function update_result(){
 
       remaining_count--;
     }
-    // 연가일수를 다 못채웠으면
+    // 휴가일수를 다 못채웠으면
     if(remaining_count > 0)
       result.innerHTML += '<b style="color: red">실근무2개월 미만</b>'
     else
@@ -272,34 +277,6 @@ function update_result(){
 ////////////////////////////////////////////////////////////////////////////////
 
 
-function click_day(i) {
-  service_day_array[i] = 1 - service_day_array[i]
-
-  update_calendar()
-  update_result()
-}
-
-function click_week(week) {
-  // 2022년일때만 먹히는 코드
-  for(i = 7*week - 6; i <= 7*week; ++i)
-    // 단순 cell-by-cell 토글은 아니고 마지막 항목 기준으로 토글
-    service_day_array[i] = 1 - service_day_array[7*week]
-
-  update_calendar()
-  update_result()
-}
-
-function click_month(month) {
-  start_day_ind = date_to_index(new Date(2022, month-1, 1));
-  end_day_ind = date_to_index(new Date(2022, month, 0));
-  for(i = start_day_ind; i <= end_day_ind; ++i)
-    // 단순 cell-by-cell 토글은 아니고 마지막 항목 기준으로 토글
-    service_day_array[i] = 1 - service_day_array[end_day_ind]
-
-  update_calendar()
-  update_result()
-}
-
 function vacation_change(value){
   vacation_count = Number(value)
   if(vacation_count < 0)
@@ -309,19 +286,30 @@ function vacation_change(value){
   update_result()
 }
 
-function all_work(){
+function period_change(){
   for(i = 0; i < 365; ++i)
     service_day_array[i] = 1;
 
+  for(pid = 1; pid <= 8; ++pid){
+    fromDom = document.getElementById(`period-from-${pid}`)
+    toDom = document.getElementById(`period-to-${pid}`)
+
+    fromDate = fromDom.valueAsDate
+    toDate = toDom.valueAsDate
+
+    if(fromDate != null && toDate != null){
+      fromDate.setHours(0)
+      toDate.setHours(0)
+
+      from_day_ind = date_to_index(fromDate)
+      to_day_ind = date_to_index(toDate)
+
+      for(i = from_day_ind; i <= to_day_ind; ++i){
+        service_day_array[i] = 0;
+      }
+    }
+  }
   update_calendar()
   update_result()
-
 }
 
-function all_rest(){
-  for(i = 0; i < 365; ++i)
-    service_day_array[i] = 0;
-
-  update_calendar()
-  update_result()
-}

@@ -7,6 +7,7 @@
   <script src="jquery.min.js"></script>
   <script src="service-day-calculator.js"></script>
 
+
   <body>
 
     <div style="border: 1px solid; margin: 0 auto; width: 1280px;">
@@ -16,18 +17,8 @@
       <p></p><br>
       <p class="mybody">사용법:</p>
       <ol class="mybody" type="A">
-        <li>연가 일수를 입력 (30일 미만)</li>
-        <ul>
-          <li>30일 이상의 연가의 경우 B.의 달력에 근무에 종사하지 않는 기간으로 표기</li>
-          <li>연가는 8시간 당 1일로 계산해서 입력하며, 8시간 미만은 버림</li>
-          <li>단, 시간선택제공무원의 경우 근무시간 기준으로 연가 1일 계산</li>
-        </ul>
+        <li>휴가 일수를 입력 (30일 미만)</li>
         <li>아래 달력에서 근무에 종사하지 않는 기간을 표기(휴직, 교육훈련파견, 직위해제 등)</li>
-        <ul>
-          <li>연가의 경우 30일 이상의 경우만 표기하고 그 외는 A.에 입력</li>
-          <li>공무상 질병휴직도 근무에 종사하지 않는 기간으로 표기</li>
-          <li>복직하였지만 본부발령대기인 경우에도 근무에 종사하지 않는 기간으로 표기</li>
-        </ul>
         <li>결과확인 (아래로 스크롤다운)</li>
       </ol>
       <p></p><br>
@@ -37,7 +28,7 @@
         <li>계산: 민법 제160조의 역에 의한 방법으로 계산 (2개월 예시: 1.1. ~ 2.28.)</li>
       </ul>
       <p></p><br>
-      <p class="mybody">주의사항:</p>
+      <p class="mybody"><b>주의사항</b>:</p>
       <ul class="mybody">
         <li>신규채용자 중 평가대상기간 공무원 경력이 있는 경우 실제근무한기간 합산</li>
       </ul>
@@ -46,55 +37,99 @@
     <p></p><br>
     <br>
     <p></p>
-    <div class="mybody">A. 연가 일수 : <input type="number" id="points" name="points" step="1" style="height: 50px;font-size: 30px" onchange="vacation_change(this.value)"></div>
+    <div class="mybody"style="border: 1px solid; margin: 0 auto; padding: 10px">
+      <b>A. 휴가 일수 입력</b>: <input type="number" id="points" name="points" step="1" style="height: 50px;font-size: 30px" onchange="vacation_change(this.value)">
+      <ul>
+        <li>연가, 공가, 병가, 특별휴가 등 모든 휴가 일수 입력</li>
+        <li>시간 단위 휴가의 경우 누계 8시간을 1일로 계산, 8시간 미만은 버림</li>
+        <li>단, 시간선택제공무원의 경우 근무시간을 고려하여 1일 계산</li>
+        <ul>
+          <li>예를 들어 하루 4시간 근무하는 시간선택제공무원이 있으면 휴가 4시간을 1일로 계산</li>
+        </ul>
+        <li>30일 이상의 연속된 휴가는 여기에 입력하지 않고 B.에 근무에 종사하지 않은 기간으로 등록</li>
+      </ul>
+    </div>
     <br>
-    <div class="mybody">B. 근무에 종사하지 않는 기간 표기
-      <button class="mybody" onclick="all_work()">초기화(전부출근)</button>
-      <button class="mybody" onclick="all_rest()">초기화(전부휴직)</button>
+    <div class="mybody" style="border: 1px solid; margin: 0 auto; padding: 10px">
+      <b>B. 근무에 종사하지 않은 기간 등록 (휴직, 직위해제, 교육훈련파견 등)</b>
+      <table>
+        <tr>
+          <td class="mytext">
+            기간1: <input id="period-from-1"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-1"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+            기간2: <input id="period-from-2"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-2"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+            기간3: <input id="period-from-3"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-3"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+            기간4: <input id="period-from-4"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-4"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+            기간5: <input id="period-from-5"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-5"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+            기간6: <input id="period-from-6"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-6"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+            기간7: <input id="period-from-7"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-7"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+            기간8: <input id="period-from-8"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> ~
+            <input id="period-to-8"  class="mytext" type="date" min="2022-01-01", max="2022-12-31" onchange="period_change()"> <br>
+          </td>
+          <td class="mytext" style="padding-left: 10px">
+            <ul>
+              <li><b>다음 기간도 반드시 등록</b></li>
+              <ul>
+                <li>공무상 휴직, 질병 휴직</li>
+                <li>교육훈련 파견</li>
+                <li>직위해제기간</li>
+                <li>30일 이상의 휴가</li>
+                <li>본부대기발령</li>
+              </ul>
+              <li>전년부터 이어진 휴직 등의 경우 2022-01-01부터 입력</li>
+              <li>23년 까지 이어진 휴직 등의 경우 2022-12-31까지 입력</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+
     </div>
 
     <br>
-    <div class="mybody" style="border: 1px dashed">범례
+    <div class="mybody result"><b>C. 결과: </b></div>
+    <div class="mybody result" id="result_div"></div>
+
+    <br>
+    <div class="mybody" style="border: 1px dashed">
+      결과 설명 범례
       <div class="sec_cal">
         <div class="cal_wrap">
           <div class="dates_legend">
-            <div class="day">버튼</div>
-            <div class="day">버튼</div>
+            <div class="day"></div>
+            <div class="day"></div>
             <div class="day">일요일</div>
-            <div class="day">평일</div>
+            <div class="day">근무<br>평일</div>
             <div class="day holiday">공휴일</div>
             <div class="day" style="background: orange">제외<br>근무일</div>
-            <div class="day" style="background: grey">휴직</div>
-            <div class="day">평일</div>
+            <div class="day" style="background: grey">휴직<br>등</div>
+            <div class="day">근무<br>평일</div>
             <div class="day">토요일</div>
 
-            <div class="day">버튼</div>
-            <div class="day">버튼</div>
+            <div class="day"></div>
+            <div class="day"></div>
             <div class="day">일요일</div>
-            <div class="day">평일</div>
+            <div class="day">근무<br>평일</div>
             <div class="day holiday">공휴일</div>
             <div class="day" style="background: orange">제외<br>근무일</div>
-            <div class="day" style="background: grey">휴직</div>
-            <div class="day">평일</div>
+            <div class="day" style="background: grey">휴직<br>등</div>
+            <div class="day">근무<br>평일</div>
             <div class="day">토요일</div>
           </div>
         </div>
       </div>
       <br>
     </div>
-    <br>
-
-
     <div class="sec_cal">
       <div class="cal_wrap">
         <div class="dates" id="service_cal" ></div>
       </div>
     </div>
-    <br>
-    <div class="mybody result">C. 결과: </div>
-    <div class="mybody result" id="result_div"></div>
-
-
   </body>
 
 </html>
